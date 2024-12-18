@@ -19,7 +19,7 @@ const Login = () => {
         {/* Divider */}
         <div className='flex h-[20px] items-center justify-between gap-2'>
             <hr className='w-[175px] h-[2px] bg-black border-none' />
-            <span className='text-black font-semibold '>O</span>
+            <span className='text-black font-semibold'>O</span>
             <hr className='w-[175px] h-[2px] bg-black border-none' />
         </div>
         {/* Google log in */}
