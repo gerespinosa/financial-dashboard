@@ -1,12 +1,17 @@
-import React from 'react'
+'use client'
+import React, { useState } from 'react'
 import SignUp from './components/SignUp'
+import Notification from '../components/ui/Notification'
 
-const page = () => {
+const Page = () => {
+  const [notificationIsVisible, setNotificationIsVisible] = useState(false)
+
   return (
     <div className="flex flex-col justify-center items-center h-[100vh]">
-        <SignUp />
+      <SignUp />
+      <Notification text="Access granted" isVisible={notificationIsVisible} />
     </div>
   )
 }
 
-export default page
+export default Page

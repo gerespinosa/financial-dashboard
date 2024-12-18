@@ -20,7 +20,7 @@ const SignUp = () => {
         <Btn text='Sign up' action={handleSubmit} variant='2'/>
 
         {/* Log in link */}
-        <p className='mt-16'>Already have an account? <a href="/">Log in here</a></p>
+        <p className='mt-16'>Already have an account? <a href="/" className='text-white'>Log in here</a></p>
     </div>
   )
 }

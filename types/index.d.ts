@@ -11,3 +11,8 @@ declare type InputProps = {
     type: string;
     placeholder: string
 }
+
+declare type NotificationProps = {
+    text: string,
+    isVisible: boolean
+}

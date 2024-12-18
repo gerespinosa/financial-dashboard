@@ -1,18 +1,21 @@
 import React from 'react'
-import {useSession, signOut} from 'next-auth/react'
+import {signOut} from 'next-auth/react'
 
 import Btn from './ui/Btn';
 
 const LogoutBtn = () => {
 
-    const { data: session } = useSession();
+    const handleLogOut = () => {
+      signOut({callbackUrl: "/"})
+    }
 
-    return (
-        <div>
-          <p>Signed in as {session?.user?.email}</p>
-          <Btn text='Sign Out' action={()=> signOut()}/>
-        </div>
-      );
+  return (
+    <Btn
+      text="Sign Out"
+      action={handleLogOut}
+      variant="1"
+    />
+  );  
 }
 
 export default LogoutBtn
