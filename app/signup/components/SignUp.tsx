@@ -1,10 +1,14 @@
 'use client'
 import Btn from '@/app/components/ui/Btn'
 import Input from '@/app/components/ui/Input'
+import { useRouter } from 'next/navigation'
 import React, { FormEvent } from 'react'
 import axios from 'axios'
+import { signIn } from 'next-auth/react'
 
 function SignUp () {
+
+    const router = useRouter()
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -18,7 +22,18 @@ function SignUp () {
                 fullname: newFormData.get('name')+ ' ' + newFormData.get('lastname'),
                 password: newFormData.get('password')
             })
-            console.log(response.data)
+
+            const signUpResponse: any  = await signIn('credentials', {
+                // This is what I use to log in the user
+                email: response.data.email,
+                password: newFormData.get('password'),
+                redirect: false
+            } )
+
+            if(signUpResponse.ok){
+                router.push('/dashboard')
+            }
+            
         } catch (error) {
             console.log(error)
         }
@@ -39,7 +54,7 @@ function SignUp () {
         </form>
 
         {/* Log in link */}
-        <p className='mt-16'>Already have an account? <a href="/" className='text-white'>Log in here</a></p>
+        <p className='mt-16'>Already have an account? <a href="/login" className='text-white font-semibold'>Log in here</a></p>
     </div>
   )
 }
