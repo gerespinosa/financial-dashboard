@@ -15,7 +15,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="bg-primary">
-        <Providers>{children}</Providers>
+        <Providers>
+          {children}
+        </Providers>
       </body>
     </html>
   );

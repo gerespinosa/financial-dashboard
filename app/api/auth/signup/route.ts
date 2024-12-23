@@ -5,7 +5,7 @@ import { connectDB } from "@/lib/mongodb";
 
 export async function POST (req: Request) {
 
-    const {fullname, email, password} = await req.json()
+    const {fullname, email, password, provider} = await req.json()
 
     if(!password || password.length < 6) {
         return NextResponse.json(
@@ -26,14 +26,31 @@ export async function POST (req: Request) {
         } else {
     
             const hashPassword = await bcrypt.hash(password, 10)
-    
-            const newUser = new User({
+
+            let newUser;
+
+            if (provider === "credentials") {
+              const hashPassword = await bcrypt.hash(password, 10);
+              newUser = new User({
                 fullname,
                 email,
-                password: hashPassword
-            })
-    
-            const savedUser = await newUser.save()
+                password: hashPassword,
+                provider: "credentials",
+              });
+            } else if (provider === "google") {
+              newUser = new User({
+                fullname,
+                email,
+                provider: "google",
+              });
+            } else {
+              return NextResponse.json(
+                { message: "Invalid provider" },
+                { status: 400 }
+              );
+            }
+        
+            const savedUser = await newUser.save();
 
             return NextResponse.json({
                 id: savedUser._id,

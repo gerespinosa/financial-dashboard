@@ -42,6 +42,23 @@ const handler = NextAuth({
         })
     ],
     callbacks: {
+        async signIn({ user, account, profile }) {
+          if (account?.provider === 'google') {
+            await connectDB();
+            const existingUser = await User.findOne({ email: user.email });
+      
+            if (!existingUser) {
+              // Crear usuario si no existe
+              const newUser = new User({
+                fullname: user.name,
+                email: user.email,
+                provider: 'google',
+              });
+              await newUser.save();
+            }
+          }
+          return true;
+        },
         async jwt({ token, user }) {
           if (user) token.user = user;
           return token;

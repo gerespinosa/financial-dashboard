@@ -10,7 +10,8 @@ export default {
     extend: {
       colors: {
         primary: "#2c2475", //Blue-violet
-        secondary: "#A972F5" //Purple
+        secondary: "#A972F5", //Purple
+        background: "#D3DDEC" //Light blue
       },
       fontSize:{
         title: '32px'

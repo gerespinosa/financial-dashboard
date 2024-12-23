@@ -1,4 +1,5 @@
 'use client'
+import Btn2 from '@/app/components/ui/Btn2'
 import Btn from '@/app/components/ui/Btn'
 import Input from '@/app/components/ui/Input'
 import { useRouter } from 'next/navigation'
@@ -10,29 +11,43 @@ function LogIn () {
   const router = useRouter()
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+        e.preventDefault()
 
-    const newFormData = new FormData(e.currentTarget)
+        const newFormData = new FormData(e.currentTarget)
 
-    try {
-        const loginResponse: any  = await signIn('credentials', {
-            // This is what I use to log in the user
-            email: newFormData.get('email'),
-            password: newFormData.get('password'),
-            redirect: false
-        } )
+        try {
+            const loginResponse: any  = await signIn('credentials', {
+                // This is what I use to log in the user
+                email: newFormData.get('email'),
+                password: newFormData.get('password'),
+                redirect: false
+            } )
 
-        if(loginResponse.ok){
-            router.push('/dashboard')
+            if(loginResponse.ok){
+                router.push('/dashboard')
+            }
+            
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const handleGoogleLogin = async () => {
+
+        try {
+            const loginResponse: any = await signIn('google', {
+                redirect: false,
+                callbackUrl: '/dashboard'
+            })
+            
+        } catch (error) {
+            console.log(error)
         }
         
-    } catch (error) {
-        console.log(error)
     }
-}
 
   return (
-    <div className='flex flex-col justify-center items-center bg-secondary bg-opacity-45 w-fit rounded-md shadow-sm shadow-black gap-2 p-8'>
+    <div className='flex flex-col justify-center items-center bg-secondary bg-opacity-45 w-fit rounded-md shadow-sm shadow-black gap-4 p-8 relative'>
         <h4 className='text-center font-bold text-white my-4 text-title'>Log In</h4>
 
         {/* Sign up form */}
@@ -42,6 +57,16 @@ function LogIn () {
             <Input type='password' placeholder='Password' name='password'/>
             <Btn text='Log In' variant='2'/>
         </form>
+
+        {/* Divider */}
+        <div className='flex h-[20px] items-center justify-center gap-4'>
+            <hr className='w-[175px] h-[2px] bg-white border-none' />
+            <span className='text-white font-semibold'>O</span>
+            <hr className='w-[175px] h-[2px] bg-white border-none' />
+        </div>
+
+        {/* Google login */}
+        <Btn2 text='Log in with Google' variant={'3'} action={handleGoogleLogin} path={'/google.svg'}   />
 
         {/* Sign Up link */}
         <p className='mt-16'>You don't have an account? <a href="/signup" className='text-white font-bold'>Sign Up here</a></p>

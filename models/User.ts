@@ -1,4 +1,4 @@
-import mongoose, { model, models, Schema } from "mongoose";
+import { model, models, Schema } from "mongoose";
 
 const UserSchema = new Schema ({
     fullname: {
@@ -13,15 +13,23 @@ const UserSchema = new Schema ({
             "Please fill a valid email address"
         ]
     },
-    password: {
-        type: String,
-        required: [true, "Password is required"],
-        select: false
-    },
     image: {
         type: String,
         required: false
-    }
+    },
+    provider: { 
+        type: String, 
+        required: true 
+    }, // 'google' or 'credentials'
+    password: {
+      type: String,
+      select: false,
+      required: function () {
+        return this.provider === "credentials";
+      },
+    },
+}, {
+    timestamps: true
 })
 
 const User = models.User || model("User", UserSchema)
