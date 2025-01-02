@@ -13,6 +13,7 @@ const page = () => {
         <span className='text-primary font-normal'>Hello, </span>
         {session?.user?.name ? session.user.name.split(' ')[0] : session?.user.fullname.split(' ')[0]}
       </h2>   
+      <p>{session?.user._id}</p>
     </div>
   )
 }

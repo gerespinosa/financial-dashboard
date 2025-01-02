@@ -3,6 +3,7 @@ import User from "@/models/User";
 import bcrypt from "bcryptjs"
 import { connectDB } from "@/lib/mongodb";
 
+
 export async function POST (req: Request) {
 
     const {fullname, email, password, provider} = await req.json()
@@ -36,12 +37,14 @@ export async function POST (req: Request) {
                 email,
                 password: hashPassword,
                 provider: "credentials",
+
               });
             } else if (provider === "google") {
               newUser = new User({
                 fullname,
                 email,
                 provider: "google",
+
               });
             } else {
               return NextResponse.json(

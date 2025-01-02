@@ -4,49 +4,50 @@ import Btn from '@/app/components/ui/Btn'
 import Input from '@/app/components/ui/Input'
 import { useRouter } from 'next/navigation'
 import React, { FormEvent } from 'react'
-import { signIn } from 'next-auth/react'
+import { getSession, signIn } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
 
 function LogIn () {
 
   const router = useRouter()
 
+  const {data: session} = useSession()
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
+    e.preventDefault();
 
-        const newFormData = new FormData(e.currentTarget)
+    const newFormData = new FormData(e.currentTarget);
 
-        try {
-            const loginResponse: any  = await signIn('credentials', {
-                // This is what I use to log in the user
-                email: newFormData.get('email'),
-                password: newFormData.get('password'),
-                redirect: false
-            } )
-
-            if(loginResponse.ok){
-                router.push('/dashboard')
-            }
-            
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    const handleGoogleLogin = async () => {
-
-        try {
-            const loginResponse: any = await signIn('google', {
-                redirect: false,
-                callbackUrl: '/dashboard'
-            })
-            
-        } catch (error) {
-            console.log(error)
-        }
+    try {
+        const loginResponse: any = await signIn('credentials', {
+            email: newFormData.get('email'),
+            password: newFormData.get('password'),
+            redirect: false
+        })
         
-    }
+        if(loginResponse.ok) {
+            const updatedSession = await getSession()
+            console.log(updatedSession?.user)
+            router.push(`/${updatedSession?.user._id}/dashboard`)
+        }
 
-  return (
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+const handleGoogleLogin = async () => {
+    try {
+        const loginResponse: any = await signIn('google', {
+            redirect: false,
+            callbackUrl: `${session?.user.id}/dashboard`
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+return (
     <div className='flex flex-col justify-center items-center bg-secondary bg-opacity-45 w-fit rounded-md shadow-sm shadow-black gap-4 p-8 relative'>
         <h4 className='text-center font-bold text-white my-4 text-title'>Log In</h4>
 

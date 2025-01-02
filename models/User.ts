@@ -1,4 +1,5 @@
 import { model, models, Schema } from "mongoose";
+import TransactionSchema from "./Transaction";
 
 const UserSchema = new Schema ({
     fullname: {
@@ -15,6 +16,10 @@ const UserSchema = new Schema ({
     },
     image: {
         type: String,
+        required: false
+    },
+    transactions: {
+        type: [TransactionSchema],
         required: false
     },
     provider: { 
